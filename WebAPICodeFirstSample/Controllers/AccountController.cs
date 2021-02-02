@@ -12,38 +12,38 @@ namespace WebAPICodeFirstSample.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class AccountController : ControllerBase
     {
-        private IDataRepository<User, long> _iRepo;
-        public UserController(IDataRepository<User, long> repo)
+        private IDataRepository<Account, long> _iRepo;
+        public AccountController(IDataRepository<Account, long> repo)
         {
             _iRepo = repo;
         }
 
         // GET: api/<UserController>
         [HttpGet]
-        public IEnumerable<User> Get()
+        public IEnumerable<Account> Get()
         {
             return _iRepo.GetAll();
         }
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public User Get(int id)
+        public Account Get(int id)
         {
             return _iRepo.Get(id);
         }
 
         // POST api/<UserController>
         [HttpPost]
-        public void Post([FromBody] User user)
+        public void Post([FromBody] Account user)
         {
             _iRepo.Add(user);
         }
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
-        public void Put([FromBody] User user)
+        public void Put([FromBody] Account user)
         {
             _iRepo.Update(user.Id, user);
         }

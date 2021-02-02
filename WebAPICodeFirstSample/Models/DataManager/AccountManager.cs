@@ -6,27 +6,27 @@ using WebAPICodeFirstSample.Models.Repository;
 
 namespace WebAPICodeFirstSample.Models.DataManager
 {
-    public class UserManager : IDataRepository<User, long>
+    public class AccountManager : IDataRepository<Account, long>
     {
         ApplicationContext ctx;
-        public UserManager(ApplicationContext c)
+        public AccountManager(ApplicationContext c)
         {
             ctx = c;
         }
 
-        public User Get(long id)
+        public Account Get(long id)
         {
             var student = ctx.Users.FirstOrDefault(b => b.Id == id);
             return student;
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<Account> GetAll()
         {
             var users = ctx.Users.ToList();
             return users;
         }
 
-        public long Add(User user)
+        public long Add(Account user)
         {
             ctx.Users.Add(user);
             long studentID = ctx.SaveChanges();
@@ -45,7 +45,7 @@ namespace WebAPICodeFirstSample.Models.DataManager
             return iD;
         }
 
-        public long Update(long id, User item)
+        public long Update(long id, Account item)
         {
             long iD = 0;
             var user = ctx.Users.Find(id);

@@ -31,7 +31,7 @@ namespace WebAPICodeFirstSample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:SimpleDB"]));
-            services.AddTransient(typeof(IDataRepository<User, long>), typeof(UserManager));
+            services.AddTransient(typeof(IDataRepository<Account, long>), typeof(AccountManager));
             services.AddMvc();
             services.AddControllers();
             services.AddSwaggerGen(c =>

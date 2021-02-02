@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebAPICodeFirstSample.Models
 {
-    public class User
+    public class Account
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

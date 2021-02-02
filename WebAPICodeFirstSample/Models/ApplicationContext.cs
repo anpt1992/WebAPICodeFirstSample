@@ -9,7 +9,7 @@ namespace WebAPICodeFirstSample.Models
         {
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<Account> Users { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
         }
