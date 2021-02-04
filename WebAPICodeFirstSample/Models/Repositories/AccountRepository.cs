@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebAPICodeFirstSample.Models.Repository
+namespace WebAPICodeFirstSample.Models.Repositories
 {
     public class AccountRepository : BaseRepository<Account>
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using WebAPICodeFirstSample.Models;
-using WebAPICodeFirstSample.Models.Repository;
+using WebAPICodeFirstSample.Models.Repositories;
 using WebAPICodeFirstSample.Services;
 
 namespace WebAPICodeFirstSample.Configurations

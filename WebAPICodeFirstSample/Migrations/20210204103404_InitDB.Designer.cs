@@ -9,7 +9,7 @@ using WebAPICodeFirstSample.Models;
 namespace WebAPICodeFirstSample.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20210204093509_InitDB")]
+    [Migration("20210204103404_InitDB")]
     partial class InitDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,6 +27,9 @@ namespace WebAPICodeFirstSample.Migrations
                         .HasColumnType("bigint")
                         .UseIdentityColumn();
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
@@ -34,6 +37,12 @@ namespace WebAPICodeFirstSample.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebAPICodeFirstSample.Models
+namespace WebAPICodeFirstSample.Models.Requests
 {
-    public class Account
+    public class RegisterRequest
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+        [EmailAddress]
+        [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
         public string Role { get; set; }
         public string FirstName { get; set; }

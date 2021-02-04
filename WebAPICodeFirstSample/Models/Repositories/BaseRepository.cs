@@ -6,7 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace WebAPICodeFirstSample.Models.Repository
+namespace WebAPICodeFirstSample.Models.Repositories
 {
     public interface IBaseRepository<T> where T : class
     {

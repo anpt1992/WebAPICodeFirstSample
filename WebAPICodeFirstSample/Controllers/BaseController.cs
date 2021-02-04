@@ -92,7 +92,18 @@ namespace WebAPICodeFirstSample.Controllers
         //{
         //    return GetRoleNameFromToken() == "admin";
         //}
-
+        protected long GetAccountIdFromToken()
+        {
+            try
+            {
+                return Convert.ToInt64(User?.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Access token is obsolete. " +
+                    "Please, request a new access token then try again.");
+            }
+        }
         protected string GetRoleNameFromToken()
         {
             return User?.FindFirst(ClaimTypes.Role)?.Value;
@@ -102,84 +113,18 @@ namespace WebAPICodeFirstSample.Controllers
         {
             return User?.FindFirst(ClaimTypes.Name)?.Value;
         }
+        
+        protected ActionResult<ResponseWrapper> error_operation_forbidden()
+        {
+            return error(HttpStatusCode.Forbidden, "Operation forbidden. " +
+                "Make sure that your access token containing this operation execution right ");
+        }
 
-        //protected UserIdentifier GetUserIdentifier()
-        //{
-        //    return new UserIdentifier(
-        //        GetUserIdFromToken(),
-        //        GetRoleNameFromToken(),
-        //        GetUsernameFromToken(),
-        //        GetAccountIdFromToken()
-        //    );
-        //}
-
-        //private int GetAccountIdFromToken()
-        //{
-        //    try
-        //    {
-        //        var accountIdStr = User?.FindFirst(Constants.CLAIM_ACCOUNT_ID)?.Value;
-        //        return int.Parse(accountIdStr);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw new Exception("Access token is obsolete. " +
-        //            "Please, request a new access token then try again.");
-        //    }
-        //}
-
-        // Use to check if an operation is valid.
-        // An operation is valid when 
-        // it executing on data of user (customer or garage ...)
-
-        //protected bool IsValidOperationOnUserData(int userId)
-        //{
-        //    return GetUserIdFromToken() == userId;
-        //}
-
-        //protected int GetUserIdFromToken()
-        //{
-        //    try
-        //    {
-        //        return int.Parse(
-        //            User?.FindFirst(Constants.CLAIM_USER_ID)?.Value
-        //        );
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Debug.WriteLine("GetUserIdFromToken " + e.Message);
-        //        return -1;
-        //    }
-        //}
-        //protected int GetAccountIdFromToken()
-        //{
-        //    try
-        //    {
-        //        return int.Parse(
-        //            User?.FindFirst(Constants.CLAIM_ACCOUNT_ID)?.Value
-        //        );
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Debug.WriteLine("GetAccountIdFromToken " + e.Message);
-        //        return -1;
-        //    }
-        //}
-        //protected ActionResult<ResponseWrapper> error_operation_forbidden()
-        //{
-        //    return error(HttpStatusCode.Forbidden, "Operation forbidden. " +
-        //        "Make sure that your access token containing this operation execution right ");
-        //}
-
-        //protected ActionResult<ResponseWrapper> error_invalid_user()
-        //{
-        //    return error(HttpStatusCode.Forbidden, "Invalid user. " +
-        //        "Make sure that you have valid access token");
-        //}
-
-        //protected bool IsInvalidUser()
-        //{
-        //    return GetUserIdFromToken() == -1;
-        //}
+        protected ActionResult<ResponseWrapper> error_invalid_user()
+        {
+            return error(HttpStatusCode.Forbidden, "Invalid user. " +
+                "Make sure that you have valid access token");
+        }       
 
         protected string GetEmailFromToken()
         {
