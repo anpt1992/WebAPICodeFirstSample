@@ -12,9 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPICodeFirstSample.Configurations;
 using WebAPICodeFirstSample.Models;
-using WebAPICodeFirstSample.Models.DataManager;
 using WebAPICodeFirstSample.Models.Repository;
+using WebAPICodeFirstSample.Services;
 
 namespace WebAPICodeFirstSample
 {
@@ -31,7 +32,10 @@ namespace WebAPICodeFirstSample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:SimpleDB"]));
-            services.AddTransient(typeof(IDataRepository<Account, long>), typeof(AccountManager));
+
+            DIConfig.AddDependencies(services);
+            MapperConfig.Config(services, Configuration);
+
             services.AddMvc();
             services.AddControllers();
             services.AddSwaggerGen(c =>

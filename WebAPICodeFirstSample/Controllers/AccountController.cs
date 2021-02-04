@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPICodeFirstSample.Models;
 using WebAPICodeFirstSample.Models.Repository;
+using WebAPICodeFirstSample.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,47 +14,51 @@ namespace WebAPICodeFirstSample.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseController<IAccountService>
     {
-        private IDataRepository<Account, long> _iRepo;
-        public AccountController(IDataRepository<Account, long> repo)
+
+        public AccountController(IAccountService service, IMapper mapper) : base(service, mapper)
         {
-            _iRepo = repo;
         }
 
         // GET: api/<UserController>
         [HttpGet]
-        public IEnumerable<Account> Get()
+        public ActionResult<ResponseWrapper> Get()
         {
-            return _iRepo.GetAll();
+            var result = _service.GetAll().ToList();
+            return ok_get(result);
         }
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public Account Get(int id)
+        public ActionResult<ResponseWrapper> Get(int id)
         {
-            return _iRepo.Get(id);
+            var result = _service.GetById(id);
+            return ok_get(result);
         }
 
         // POST api/<UserController>
         [HttpPost]
-        public void Post([FromBody] Account user)
+        public ActionResult<ResponseWrapper> Post([FromBody] Account user)
         {
-            _iRepo.Add(user);
+            var result = _service.Insert(user);
+            return ok_create(result);
         }
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
-        public void Put([FromBody] Account user)
+        public ActionResult<ResponseWrapper> Put([FromBody] Account user)
         {
-            _iRepo.Update(user.Id, user);
+            _service.Update(user,user.Id);
+            return ok_update();
         }
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        public long Delete(int id)
+        public ActionResult<ResponseWrapper> Delete(int id)
         {
-            return _iRepo.Delete(id);
+            _service.Delete(id);
+            return ok_delete();
         }
     }
 }

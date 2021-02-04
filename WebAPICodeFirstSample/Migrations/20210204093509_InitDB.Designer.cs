@@ -9,8 +9,8 @@ using WebAPICodeFirstSample.Models;
 namespace WebAPICodeFirstSample.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20210201143703_WebAPICodeFirstSample.Models.ApplicationContext")]
-    partial class WebAPICodeFirstSampleModelsApplicationContext
+    [Migration("20210204093509_InitDB")]
+    partial class InitDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,7 +20,7 @@ namespace WebAPICodeFirstSample.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.2");
 
-            modelBuilder.Entity("WebAPICodeFirstSample.Models.User", b =>
+            modelBuilder.Entity("WebAPICodeFirstSample.Models.Account", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,7 +38,7 @@ namespace WebAPICodeFirstSample.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Accounts");
                 });
 #pragma warning restore 612, 618
         }

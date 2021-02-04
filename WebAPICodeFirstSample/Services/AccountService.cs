@@ -1,26 +1,19 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using WebAPICodeFirstSample.Models;
+using WebAPICodeFirstSample.Models.Repository;
+using WebAPICodeFirstSample.Services.Base;
 
 namespace WebAPICodeFirstSample.Services
 {
-    public interface IAccountService
+    public interface IAccountService : IBaseService<Account>
     {
-        List<string> GetAll();
+        
     }
-    public class AccountService : IAccountService
+    public class AccountService : BaseService<Account>,IAccountService
     {
-        public List<string> GetAll()
+        public AccountService(IBaseRepository<Account> repo) : base(repo)
         {
-            return new List<string>
-            {
-                "Pen Drive",
-                "Memory Card",
-                "Mobile Phone",
-                "Tablet",
-                "Desktop PC",
-            };
-        }
+        }        
     }
 }
