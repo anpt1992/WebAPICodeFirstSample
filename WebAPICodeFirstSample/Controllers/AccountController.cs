@@ -57,7 +57,7 @@ namespace WebAPICodeFirstSample.Controllers
         }
 
         // POST api/<UserController>
-        [Authorize(Roles = "admin")]
+      //  [Authorize(Roles = "admin")]
         [HttpPost]
         public ActionResult<ResponseWrapper> Post([FromBody] Account account)
         {

@@ -88,10 +88,11 @@ namespace WebAPICodeFirstSample.Controllers
             return stringBuilder.ToString();
         }
 
-        //protected bool IsAdmin()
-        //{
-        //    return GetRoleNameFromToken() == "admin";
-        //}
+        protected bool IsAdmin()
+        {
+            return GetRoleNameFromToken() == "admin";
+        }
+
         protected long GetAccountIdFromToken()
         {
             try
@@ -113,7 +114,7 @@ namespace WebAPICodeFirstSample.Controllers
         {
             return User?.FindFirst(ClaimTypes.Name)?.Value;
         }
-        
+
         protected ActionResult<ResponseWrapper> error_operation_forbidden()
         {
             return error(HttpStatusCode.Forbidden, "Operation forbidden. " +
@@ -124,7 +125,7 @@ namespace WebAPICodeFirstSample.Controllers
         {
             return error(HttpStatusCode.Forbidden, "Invalid user. " +
                 "Make sure that you have valid access token");
-        }       
+        }
 
         protected string GetEmailFromToken()
         {

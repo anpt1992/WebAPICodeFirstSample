@@ -9,7 +9,7 @@ using WebAPICodeFirstSample.Models;
 namespace WebAPICodeFirstSample.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20210204103404_InitDB")]
+    [Migration("20210205042817_InitDB")]
     partial class InitDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,9 @@ namespace WebAPICodeFirstSample.Migrations
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");

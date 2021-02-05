@@ -35,6 +35,7 @@ namespace WebAPICodeFirstSample.Models.Repositories
         void Update(T entity, object id, ChangeUpdate changeUpdate);
         T GetByIds(object id, object id2);
         void Remove(object id, object id2);
+        Task<int> DeleteAsync(object id);
     }
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
@@ -56,6 +57,14 @@ namespace WebAPICodeFirstSample.Models.Repositories
                 Save();
             }
             else throw new Exception("Not found");
+        }
+
+        public virtual async Task<int> DeleteAsync(object id)
+        {
+            long _id = Convert.ToInt64(id);
+            var entity = await _dbSet.FindAsync(_id);
+            _dbSet.Remove(entity);
+            return await _dbContext.SaveChangesAsync();
         }
 
 
