@@ -36,8 +36,8 @@ namespace WebAPICodeFirstSample.Controllers
                     DisplayName = $"{account.FirstName} {account.LastName}",
                     RoleName = account.Role,
                     Token = _service.CreateToken(account)
-                }) ;
-            }           
+                });
+            }
             return Unauthorized("Login fail!");
         }
         // GET: api/<UserController>
@@ -57,7 +57,7 @@ namespace WebAPICodeFirstSample.Controllers
         }
 
         // POST api/<UserController>
-      //  [Authorize(Roles = "admin")]
+        //  [Authorize(Roles = "admin")]
         [HttpPost]
         public ActionResult<ResponseWrapper> Post([FromBody] Account account)
         {
@@ -69,16 +69,17 @@ namespace WebAPICodeFirstSample.Controllers
         [HttpPut("{id}")]
         public ActionResult<ResponseWrapper> Put([FromBody] Account account)
         {
-            _service.Update(account,account.Id);
+            _service.Update(account, account.Id);
             return ok_update();
         }
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        public ActionResult<ResponseWrapper> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _service.Delete(id);
-            return ok_delete();
+            await _service.DeleteAsync(id);
+            return Ok();
+            //return ok_delete();
         }
     }
 }

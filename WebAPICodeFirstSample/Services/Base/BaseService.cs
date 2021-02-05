@@ -14,7 +14,7 @@ namespace WebAPICodeFirstSample.Services.Base
         void Update(T entity, object id);
         bool Exist(object id);
         List<T> InsertRange(List<T> entities);
-        void DeleteAsync(object id);
+        Task<int> DeleteAsync(object id);
     }
     public class BaseService<T> : IBaseService<T> where T : class
     {
@@ -29,9 +29,9 @@ namespace WebAPICodeFirstSample.Services.Base
         {
             _repo.Delete(id);
         }
-        public async virtual void DeleteAsync(object id)
+        public async virtual Task<int> DeleteAsync(object id)
         {
-           await _repo.DeleteAsync(id);
+            return await _repo.DeleteAsync(id);
         }
 
         public bool Exist(object id)
@@ -61,6 +61,6 @@ namespace WebAPICodeFirstSample.Services.Base
         public virtual List<T> InsertRange(List<T> entities)
         {
             return _repo.InsertRange(entities);
-        }       
+        }
     }
 }
