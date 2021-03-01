@@ -26,7 +26,10 @@ namespace WebAPICodeFirstSample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:SimpleDB"]));
+           // services.AddDbContext<ApplicationContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:SimpleDB"]));
+
+            services.AddDbContext<ApplicationContext>(options => options.UseLazyLoadingProxies().UseMySql(Configuration["ConnectionString:SimpleDB"], ServerVersion.AutoDetect(Configuration["ConnectionString:SimpleDB"])));
+
 
             DIConfig.AddDependencies(services);
             MapperConfig.Config(services, Configuration);
