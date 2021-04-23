@@ -1,13 +1,16 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text;
 using WebAPICodeFirstSample.Configurations;
 using WebAPICodeFirstSample.Models;
@@ -26,32 +29,42 @@ namespace WebAPICodeFirstSample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           // services.AddDbContext<ApplicationContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:SimpleDB"]));
+            // services.AddDbContext<ApplicationContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:SimpleDB"]));
 
-            services.AddDbContext<ApplicationContext>(options => options.UseLazyLoadingProxies().UseMySql(Configuration["ConnectionString:SimpleDB"], ServerVersion.AutoDetect(Configuration["ConnectionString:SimpleDB"])));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseLazyLoadingProxies().UseMySql(Configuration["ConnectionString:SimpleDB"], ServerVersion.AutoDetect(Configuration["ConnectionString:SimpleDB"])));
 
+            services.AddDefaultIdentity<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                // this adds the config data from DB (clients, resources)
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                        builder.UseMySql(Configuration["ConnectionString:SimpleDB"], ServerVersion.AutoDetect(Configuration["ConnectionString:SimpleDB"]),
+                            sql => sql.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
+                })
+                // this adds the operational data from DB (codes, tokens, consents)
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                        builder.UseMySql(Configuration["ConnectionString:SimpleDB"], ServerVersion.AutoDetect(Configuration["ConnectionString:SimpleDB"]),
+                            sql => sql.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
+
+                    // this enables automatic token cleanup. this is optional.
+                    options.EnableTokenCleanup = true;
+                    options.TokenCleanupInterval = 30;
+                }).AddAspNetIdentity<ApplicationUser>();
+
+
+            services.AddAuthentication().AddIdentityServerJwt();
 
             DIConfig.AddDependencies(services);
             MapperConfig.Config(services, Configuration);
 
-            var key = Encoding.ASCII.GetBytes(Configuration["JWT:Secret"]);
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
+
 
             services.AddMvc();
             services.AddControllers();
@@ -96,6 +109,8 @@ namespace WebAPICodeFirstSample
             }
 
             app.UseHttpsRedirection();
+            app.UseIdentityServer();
+
 
             app.UseRouting();
             app.UseForwardedHeaders(new ForwardedHeadersOptions

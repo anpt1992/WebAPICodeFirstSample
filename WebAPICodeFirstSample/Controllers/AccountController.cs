@@ -23,23 +23,23 @@ namespace WebAPICodeFirstSample.Controllers
         public AccountController(IAccountService service, IMapper mapper) : base(service, mapper)
         {
         }
-        [HttpPost]
-        [Route("login")]
-        public ActionResult<ResponseWrapper> Login([FromBody] LoginRequest request)
-        {
-            var account = _service.GetValidCredentialAccount(request.Email, request.Password);
-            if (account != null)
-            {
-                return ok_get(new LoginResponse
-                {
-                    Email = account.Email,
-                    DisplayName = $"{account.FirstName} {account.LastName}",
-                    RoleName = account.Role,
-                    Token = _service.CreateToken(account)
-                });
-            }
-            return Unauthorized("Login fail!");
-        }
+        //[HttpPost]
+        //[Route("login")]
+        //public ActionResult<ResponseWrapper> Login([FromBody] LoginRequest request)
+        //{
+        //    var account = _service.GetValidCredentialAccount(request.Email, request.Password);
+        //    if (account != null)
+        //    {
+        //        return ok_get(new LoginResponse
+        //        {
+        //            Email = account.Email,
+        //            DisplayName = $"{account.FirstName} {account.LastName}",
+        //            RoleName = account.Role,
+        //            Token = _service.CreateToken(account)
+        //        });
+        //    }
+        //    return Unauthorized("Login fail!");
+        //}
         // GET: api/<UserController>
         [HttpGet]
         public ActionResult<ResponseWrapper> Get()
@@ -59,7 +59,7 @@ namespace WebAPICodeFirstSample.Controllers
         // POST api/<UserController>
         //  [Authorize(Roles = "admin")]
         [HttpPost]
-        public ActionResult<ResponseWrapper> Post([FromBody] Account account)
+        public ActionResult<ResponseWrapper> Post([FromBody] ApplicationUser account)
         {
             var result = _service.Insert(account);
             return ok_create(result);
@@ -67,7 +67,7 @@ namespace WebAPICodeFirstSample.Controllers
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
-        public ActionResult<ResponseWrapper> Put([FromBody] Account account)
+        public ActionResult<ResponseWrapper> Put([FromBody] ApplicationUser account)
         {
             _service.Update(account, account.Id);
             return ok_update();

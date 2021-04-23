@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace WebAPICodeFirstSample.Models.Repositories
 {
-    public class AccountRepository : BaseRepository<Account>
+    public class AccountRepository : BaseRepository<ApplicationUser>
     {
-        public AccountRepository(ApplicationContext dbContenxt) : base(dbContenxt)
+        public AccountRepository(ApplicationDbContext  dbContenxt) : base(dbContenxt)
         {
           
         }

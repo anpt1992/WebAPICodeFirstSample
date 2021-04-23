@@ -10,7 +10,7 @@ namespace WebAPICodeFirstSample.Configurations
         internal static void AddDependencies(IServiceCollection services)
         {
             services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IBaseRepository<Account>, AccountRepository>();
+            services.AddScoped<IBaseRepository<ApplicationUser>, AccountRepository>();
         }
     }
 }

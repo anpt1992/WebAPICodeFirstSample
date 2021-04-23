@@ -39,10 +39,10 @@ namespace WebAPICodeFirstSample.Models.Repositories
     }
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
-        protected ApplicationContext _dbContext;
+        protected ApplicationDbContext  _dbContext;
         protected DbSet<T> _dbSet;
 
-        public BaseRepository(ApplicationContext dbContext)
+        public BaseRepository(ApplicationDbContext  dbContext)
         {
             _dbContext = dbContext;
             _dbSet = _dbContext.Set<T>();

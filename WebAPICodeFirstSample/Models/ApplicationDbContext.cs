@@ -1,20 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using IdentityServer4.EntityFramework.Options;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace WebAPICodeFirstSample.Models
 {
-    public class ApplicationContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationContext()
+        public ApplicationDbContext()
         {
         }
 
-        public ApplicationContext(DbContextOptions opts) : base(opts)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
 
-        public DbSet<Account> Accounts { get; set; }
+        //public DbSet<Account> Accounts { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
         }
@@ -22,8 +27,8 @@ namespace WebAPICodeFirstSample.Models
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Account>().Property<bool>("IsDeleted");
-            builder.Entity<Account>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
+            builder.Entity<ApplicationUser>().Property<bool>("IsDeleted");
+            builder.Entity<ApplicationUser>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
         }
         private void UpdateSoftDeleteStatuses()
         {
