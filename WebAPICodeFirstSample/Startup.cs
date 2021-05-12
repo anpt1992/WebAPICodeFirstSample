@@ -53,6 +53,21 @@ namespace WebAPICodeFirstSample
                 };
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Create", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(c => c.Type == "permissions" && c.Value == "Create")));
+
+                options.AddPolicy("Read", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(c => c.Type == "permissions" && c.Value == "Read")));
+
+                options.AddPolicy("Update", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(c => c.Type == "permissions" && c.Value == "Update")));
+
+                options.AddPolicy("Delete", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(c => c.Type == "permissions" && c.Value == "Delete")));
+            });
+
             services.AddMvc();
             services.AddControllers();
             services.AddSwaggerGen(c =>

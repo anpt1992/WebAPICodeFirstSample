@@ -15,6 +15,9 @@ namespace WebAPICodeFirstSample.Models
         }
 
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<Permission> Permissions { get; set; } = null!;
+        public DbSet<AccountPermission> AccountPermissions { get; set; } = null!;
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
         }
@@ -24,6 +27,12 @@ namespace WebAPICodeFirstSample.Models
 
             builder.Entity<Account>().Property<bool>("IsDeleted");
             builder.Entity<Account>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
+
+            builder.Entity<Permission>().Property<bool>("IsDeleted");
+            builder.Entity<Permission>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
+
+            builder.Entity<AccountPermission>().Property<bool>("IsDeleted");
+            builder.Entity<AccountPermission>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
         }
         private void UpdateSoftDeleteStatuses()
         {

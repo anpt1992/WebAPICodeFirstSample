@@ -9,6 +9,10 @@ namespace WebAPICodeFirstSample.Models
 {
     public class Account
     {
+        public Account()
+        {
+            AccountPermission = new HashSet<AccountPermission>();           
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
@@ -19,5 +23,9 @@ namespace WebAPICodeFirstSample.Models
         public string LastName { get; set; }
         public string Gender { get; set; }
         public bool IsDeleted { get; set; }
+
+        [InverseProperty("IDAccountNavigation")]
+        public virtual ICollection<AccountPermission> AccountPermission { get; set; }
+        
     }
 }

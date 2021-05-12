@@ -10,6 +10,8 @@ using WebAPICodeFirstSample.Models.Repositories;
 using WebAPICodeFirstSample.Models.Requests;
 using WebAPICodeFirstSample.Models.Responses;
 using WebAPICodeFirstSample.Services;
+using WebAPICodeFirstSample.Utils.Auth;
+using WebAPICodeFirstSample.Utils.Auth.PolicyProvider;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -23,6 +25,7 @@ namespace WebAPICodeFirstSample.Controllers
         public AccountController(IAccountService service, IMapper mapper) : base(service, mapper)
         {
         }
+       
         [HttpPost]
         [Route("login")]
         public ActionResult<ResponseWrapper> Login([FromBody] LoginRequest request)
@@ -57,7 +60,7 @@ namespace WebAPICodeFirstSample.Controllers
         }
 
         // POST api/<UserController>
-        //  [Authorize(Roles = "admin")]
+        [Authorize(Policy = "Create")]
         [HttpPost]
         public ActionResult<ResponseWrapper> Post([FromBody] Account account)
         {
@@ -80,6 +83,12 @@ namespace WebAPICodeFirstSample.Controllers
             await _service.DeleteAsync(id);
             return Ok();
             //return ok_delete();
+        }
+        [PermissionAuthorize(Permissions.Read)]
+        [HttpGet("test")]
+        public IActionResult Test()
+        {
+            return Ok("We've got products!");
         }
     }
 }
